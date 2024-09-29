@@ -10,3 +10,46 @@ This project demonstrates a complete end-to-end CI/CD pipeline for deploying a m
 Key stages include Maven for build and test automation, SonarQube for code quality analysis, and Trivy for vulnerability scanning of Docker images. The Dockerized application is stored in Nexus repository before being securely deployed to Kubernetes, with additional security scanning by Kubeaudit. Continuous monitoring and alerting are handled by Prometheus and Grafana, ensuring robust application performance and security insights.
 
 This project showcases modern DevOps practices like infrastructure-as-code (IaC), security integration (DevSecOps), and continuous monitoring, making it highly scalable and production-ready. It reflects my expertise in streamlining software delivery processes while ensuring code quality, security, and operational efficiency.
+
+## Main Features
+
+1. Continuous Integration and Continuous Deployment (CI/CD) with Jenkins
+   - Automated pipeline built with Jenkins to manage the complete software development lifecycle, 
+     from code commit to deployment.
+  
+2. Maven Build and Testing
+   - Automated build and test process using Maven to ensure code quality and functionality before 
+     deployment.
+    
+3. Code Quality Analysis with SonarQube
+   - Static code analysis performed by SonarQube to detect bugs, vulnerabilities, and code smells, 
+     ensuring high-quality code.
+  
+4. Container Image Scanning with Trivy
+   - Trivy scans Docker images for vulnerabilities to enhance security before pushing them to the 
+      registry.
+
+5. Artifact Management with Nexus Repository
+   - Maven-generated artifacts are stored and managed in Nexus Repository, ensuring a centralized, 
+     version-controlled storage.
+
+6. Dockerized Application Deployment to Kubernetes
+   - Fully Dockerized application is built, tagged, and pushed to Docker Hub, followed by deployment 
+     to a Kubernetes cluster for container orchestration.
+  
+7. Kubernetes Security Scanning with Kubeaudit
+   - Kubeaudit scans the Kubernetes deployment for potential security issues and provides         
+     recommendations to enhance the security of the environment.
+
+8. Prometheus and Grafana for Monitoring
+   - Prometheus monitors system performance and resource usage, while Grafana provides real-time 
+     visualization and alerts for the application’s health.
+
+9. Email Notifications for Pipeline Events
+   -  Configured Jenkins to send email alerts for successful or failed pipeline stages, ensuring 
+      real-time status updates.
+
+10. Scalable and Secure Infrastructure
+    - The project incorporates scalable Kubernetes architecture and security best practices, 
+      ensuring a production-ready deployment environment.
+
