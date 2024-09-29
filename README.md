@@ -53,3 +53,7 @@ This project showcases modern DevOps practices like infrastructure-as-code (IaC)
     - The project incorporates scalable Kubernetes architecture and security best practices, 
       ensuring a production-ready deployment environment.
 
+## Technologies Used
+
+-- Jenkins
+
