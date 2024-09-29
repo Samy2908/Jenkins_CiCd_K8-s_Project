@@ -2,6 +2,9 @@
 
 ## Project Overveiw
 
+![Untitled](https://github.com/user-attachments/assets/f451e04c-65bc-49a9-8b33-671c4b719087)
+
+
 This project demonstrates a complete end-to-end CI/CD pipeline for deploying a microservice-based application in Kubernetes, using industry-standard DevOps tools and practices. The pipeline is fully automated and integrates with GitHub for source code version control, Jenkins for continuous integration and deployment, and Kubernetes for container orchestration.
 
 Key stages include Maven for build and test automation, SonarQube for code quality analysis, and Trivy for vulnerability scanning of Docker images. The Dockerized application is stored in Nexus repository before being securely deployed to Kubernetes, with additional security scanning by Kubeaudit. Continuous monitoring and alerting are handled by Prometheus and Grafana, ensuring robust application performance and security insights.
