@@ -55,26 +55,30 @@ This project showcases modern DevOps practices like infrastructure-as-code (IaC)
 
 ## Technologies Used
 
-* Jenkins: For automating the CI/CD pipeline, handling tasks such as building, testing, and deploying the application.
+* **Jenkins**: For automating the CI/CD pipeline, handling tasks such as building, testing, and deploying the application.
 
-* Maven: Used to automate the build process, manage dependencies, and execute unit tests.
+* **Maven**: Used to automate the build process, manage dependencies, and execute unit tests.
 
-* SonarQube: For performing static code analysis to ensure the code is free from bugs, vulnerabilities, and code smells.
+* **SonarQube**: For performing static code analysis to ensure the code is free from bugs, vulnerabilities, and code smells.
 
-* Trivy: A security scanner that checks Docker images for vulnerabilities before pushing them to a registry.
+* **Trivy**: A security scanner that checks Docker images for vulnerabilities before pushing them to a registry.
 
-* Nexus Repository: A repository manager used to store and version control Maven-generated artifacts and Docker images.
+* **Nexus Repository**: A repository manager used to store and version control Maven-generated artifacts and Docker images.
 
-* Docker: For containerizing the application, enabling it to run consistently across different environments.
+* **Docker**: For containerizing the application, enabling it to run consistently across different environments.
 
-* Kubernetes: Used to deploy, manage, and scale the Dockerized application in a cluster environment.
+* **Kubernetes**: Used to deploy, manage, and scale the Dockerized application in a cluster environment.
 
-* Prometheus: Provides real-time monitoring and alerting for application and infrastructure metrics.
+* **Prometheus**: Provides real-time monitoring and alerting for application and infrastructure metrics.
 
-* Grafana: Used for creating dashboards to visualize metrics from Prometheus and send alerts based on performance or health thresholds.
+* **Grafana**: Used for creating dashboards to visualize metrics from Prometheus and send alerts based on performance or health thresholds.
 
-* GitHub: Acts as the source code repository and triggers Jenkins when code is committed or pushed.
-
-
+* **GitHub**: Acts as the source code repository and triggers Jenkins when code is committed or pushed.
 
 
+## Project Demonstration
+
+1. Launching EC2 instances
+   - To set up a Kubernetes cluster, you need to launch three EC2 instances: one master and two slave nodes:
+     * 
+   
