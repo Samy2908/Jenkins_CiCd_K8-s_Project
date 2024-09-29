@@ -2,7 +2,7 @@
 
 ## Project Overveiw
 
-![Untitled](https://github.com/user-attachments/assets/f451e04c-65bc-49a9-8b33-671c4b719087)
+![Untitled-fotor-20240929171830](https://github.com/user-attachments/assets/278cae07-c4d0-492a-850e-62f70bbddc1d)
 
 
 This project demonstrates a complete end-to-end CI/CD pipeline for deploying a microservice-based application in Kubernetes, using industry-standard DevOps tools and practices. The pipeline is fully automated and integrates with GitHub for source code version control, Jenkins for continuous integration and deployment, and Kubernetes for container orchestration.
