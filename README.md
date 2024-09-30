@@ -80,5 +80,30 @@ This project showcases modern DevOps practices like infrastructure-as-code (IaC)
 
 1. Launching EC2 instances
    - To set up a Kubernetes cluster, you need to launch three EC2 instances: one master and two slave nodes:
-     * 
+     
+   - Choose **t2.medium** as the instance type for all three nodes. This instance type has enough resources for a small cluster.
+     
+   - Network: Select the project-2 network setting which i have already configured which is shown in the below image
+
+   - Review your configurations and click on the Launch button.
+  
+
+![Screenshot (299)](https://github.com/user-attachments/assets/cff7bf9b-e68c-4789-b160-20bdc0bd22b0)
+
+
+![Screenshot (292)](https://github.com/user-attachments/assets/1bcba331-f1b1-4522-a55f-2ef97535171f)
+
+
+2. Installing Docker and Kubernetes on the servers
+   - SSH into the Instances or you can directly connect using EC2 instance connect.
+   - Firsly you have to shift to the root user using sudo su.
+   ### Update the package list and install docker:
+   ```
+   sudo apt-get update
+   sudo apt-get install -y docker.io
    
+   ```
+   ### Install apt transport, certificates, and curl:
+   ```
+   sudo apt-get install -y apt-transport-https ca-certificates curl gnupg
+   ```
