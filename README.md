@@ -279,4 +279,74 @@ This project showcases modern DevOps practices like infrastructure-as-code (IaC)
    ![Screenshot (328)](https://github.com/user-attachments/assets/ef36164a-b495-4e8e-8662-6aa1e64454f9)
 
 
+   ### 7. Launching the instance for Jenkins 
+
+   - Launch a **t2.medium** instance (or as per your need) with 20 GB storage for the Jenkins server.
+   - Step-by-Step Jenkins Installation:
+     - Update the package list
+     - Install Java(required for java)
+     - Add Jenkins Repository Key
+     - Add Jenkins Package Repository
+     - Install Jenkins
+     - sudo systemctl enable jenkins
+     - sudo systemctl start jenkins
+
+   ```
+   sudo apt-get update
+
+   sudo apt-get install -y openjdk-11-jdk
+
+   curl -fsSL https://pkg.jenkins.io/debian/jenkins.io.key | sudo tee \
+   /usr/share/keyrings/jenkins-archive-keyring.asc > /dev/null
+
+   echo deb [signed-by=/usr/share/keyrings/jenkins-archive-keyring.asc] \
+   https://pkg.jenkins.io/debian binary/ | sudo tee \
+   /etc/apt/sources.list.d/jenkins.list > /dev/null
+
+   sudo apt-get install -y jenkins
+
+   sudo systemctl enable jenkins
+   sudo systemctl start jenkins
+   ```
+   - To unlock Jenkins, retrieve the initial admin password from the server:
+
+   ```
+   sudo cat /var/lib/jenkins/secrets/initialAdminPassword
+   ```
+
+   ![Screenshot (331)](https://github.com/user-attachments/assets/91e98317-a72c-43e0-b718-6d4909334b07)
+
+       
+   ![Screenshot (332)](https://github.com/user-attachments/assets/807e3f38-001b-44f1-86a3-ba05c9173684)
+
    
+  ![Screenshot (334)](https://github.com/user-attachments/assets/4a351926-01b5-4eca-8f8f-77c636e454da)
+
+   
+   ### 8. Installing Essential Jenkins Plugins
+
+   - Search and install the following plugins:
+     - Eclipse Temurin
+     - Maven Integration
+     - SonarQube Scanner
+     - Docker Pipeline
+     - Kubernetes
+     - Config file provider
+     - Docker
+   
+   - After selecting all the required plugins, click on the Install without Restart button. Jenkins will begin downloading and installing the plugins.
+
+
+   ![Screenshot (335)](https://github.com/user-attachments/assets/5ace3849-3ea4-4935-b269-17734d2aa650)
+
+
+   
+
+
+
+
+
+
+
+   
+
