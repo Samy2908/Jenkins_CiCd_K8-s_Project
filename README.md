@@ -340,6 +340,124 @@ This project showcases modern DevOps practices like infrastructure-as-code (IaC)
    ![Screenshot (335)](https://github.com/user-attachments/assets/5ace3849-3ea4-4935-b269-17734d2aa650)
 
 
+   ### 9. Configuring Tools in Jenkins
+
+   -   After installing the necessary plugins, the next step is to configure the tools like JDK, Maven, SonarQube, Docker, and Git in Jenkins.
+
+   1.  Configuring JDK:
+       - Manage Jenkins → Global Tool Configuration.
+       - Scroll down to the JDK section.
+       - Click Add JDK.
+       - Install automatically: Check this option.
+
+   2. Configuring Maven:
+         - In the Global Tool Configuration page, scroll to Maven.
+         - Click Add Maven.
+         - Install automatically: Check this option.
+
+   3. Configuring SonarQube:
+         - Scroll to SonarQube Servers.
+         - Click **Add SonarQube**.
+         - Server URL: Provide your SonarQube server URL (e.g., http://<sonarqube-server-ip>:9000).
+         - **Server Authentication Token**: Add the authentication token generated from your SonarQube server.
+
+   ![Screenshot (344)](https://github.com/user-attachments/assets/62915d02-3cc8-4fb3-8b23-0c804308f226)
+
+   ![Screenshot (338)](https://github.com/user-attachments/assets/4a7fb032-354d-4a1e-b096-1c645cf9c235)
+
+
+   ### 10. Starting a New Project with Jenkins Pipeline
+
+   - From your Jenkins home page, click on New Item.
+   - Give your project a meaningful name (e.g., Java-Game-Deploy).
+   - Select **Pipeline** from the list of project types and click OK.
+
+   ![Screenshot (341)](https://github.com/user-attachments/assets/1516b266-0457-49fd-8823-926e9c4e6bcd)
+
+
+   ### 11. Adding Nexus Repositories to distributionManagement in pom.xml
+
+   - Adding Nexus Repositories to distributionManagement in pom.xml
+   
+   1. Open the pom.xml File.
+   2. Add the following <distributionManagement> section to specify where Maven will deploy the release and snapshot artifacts.
+
+   ```
+   <distributionManagement>
+        <!-- Releases Repository Configuration -->
+        <repository>
+            <id>nexus-releases</id>
+            <url>http://<nexus-server-ip>:8081/repository/maven-releases/</url>
+        </repository>
+
+        <!-- Snapshots Repository Configuration -->
+        <snapshotRepository>
+            <id>nexus-snapshots</id>
+            <url>http://<nexus-server-ip>:8081/repository/maven-snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
+   ```
+   3. Save and Commit Your Changes
+
+
+   ![Screenshot (346)](https://github.com/user-attachments/assets/4fabda50-b024-45f7-8153-f5a6f06f5aba)
+
+
+   ![Screenshot (347)](https://github.com/user-attachments/assets/a1be454f-4c82-48b0-8547-2f2d6fa93ddf)
+
+
+   
+   ### 12. Configuring Global Maven settings.xml with Server ID, Username, and Password
+
+   To securely manage your credentials (like Nexus username and password) for deploying artifacts, you need to configure the global Maven settings.xml file. This file contains the authentication details (such as the server id, username, and password) required for deployment.
+
+  Here’s how you can set it up:
+  
+  1. Locate the Global settings.xml File.
+   - If the **settings.xml** file does not exist in this location, you can create a new one.
+
+   ![Screenshot (350)](https://github.com/user-attachments/assets/c6ee5309-44ae-4f7b-945f-3267d6f69907)
+
+
+   2. Add your Nexus server details, including the server id, username, and password, inside the       <servers> tag in the settings.xml file. Here is an example:
+
+   ```
+   <!-- Servers Section -->
+    <servers>
+        <!-- Nexus Releases Repository Credentials -->
+        <server>
+            <id>nexus-releases</id>
+            <username>your-username</username>
+            <password>your-password</password>
+        </server>
+
+        <!-- Nexus Snapshots Repository Credentials -->
+        <server>
+            <id>nexus-snapshots</id>
+            <username>your-username</username>
+            <password>your-password</password>
+        </server>
+    </servers>
+   ```
+
+   ![Screenshot (352)](https://github.com/user-attachments/assets/5299179d-5aec-4fd9-bd7d-55d72e7a616b)
+
+   
+
+    
+
+
+
+
+
+
+
+
+   
+
+
+
+
    
 
 
