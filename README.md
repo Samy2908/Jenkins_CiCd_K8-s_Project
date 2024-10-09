@@ -442,18 +442,305 @@ This project showcases modern DevOps practices like infrastructure-as-code (IaC)
 
    ![Screenshot (352)](https://github.com/user-attachments/assets/5299179d-5aec-4fd9-bd7d-55d72e7a616b)
 
+
+   ## Writing a Jenkins Pipeline for CI/CD:
+
+   To implement your CI/CD pipeline in Jenkins, you need to define a Jenkins Pipeline that automates each of the steps in your project flow, such as code checkout, build, test, analysis, packaging, and deployment.
+
+
+- Here's my Jenkins Declarative Pipeline which i have used in the tutorial:
+
+```
+
+pipeline {
+    agent any
+    
+    tools {
+        jdk 'jdk17'
+        maven 'maven3'
+    }
+
+    enviornment {
+        SCANNER_HOME= tool 'sonar-scanner'
+    }
+
+    stages {
+        stage('Git Checkout') {
+            steps {
+               git branch: 'main', credentialsId: 'git-cred', url: 'https://github.com/jaiswaladi246/Boardgame.git'
+            }
+        }
+        
+        stage('Compile') {
+            steps {
+                sh "mvn compile"
+            }
+        }
+        
+        stage('Test') {
+            steps {
+                sh "mvn test"
+            }
+        }
+        
+        stage('File System Scan') {
+            steps {
+                sh "trivy fs --format table -o trivy-fs-report.html ."
+            }
+        }
+        
+        stage('SonarQube Analsyis') {
+            steps {
+                withSonarQubeEnv('sonar') {
+                    sh ''' $SCANNER_HOME/bin/sonar-scanner -Dsonar.projectName=BoardGame -Dsonar.projectKey=BoardGame \
+                            -Dsonar.java.binaries=. '''
+                }
+            }
+        }
+        
+        stage('Quality Gate') {
+            steps {
+                script {
+                  waitForQualityGate abortPipeline: false, credentialsId: 'sonar-token' 
+                }
+            }
+        }
+        
+        stage('Build') {
+            steps {
+               sh "mvn package"
+            }
+        }
+        
+        stage('Publish To Nexus') {
+            steps {
+               withMaven(globalMavenSettingsConfig: 'global-settings', jdk: 'jdk17', maven: 'maven3', mavenSettingsConfig: '', traceability: true) {
+                    sh "mvn deploy"
+                }
+            }
+        }
+        
+        stage('Build & Tag Docker Image') {
+            steps {
+               script {
+                   withDockerRegistry(credentialsId: 'docker-cred', toolName: 'docker') {
+                            sh "docker build -t adijaiswal/boardshack:latest ."
+                    }
+               }
+            }
+        }
+        
+        stage('Docker Image Scan') {
+            steps {
+                sh "trivy image --format table -o trivy-image-report.html adijaiswal/boardshack:latest "
+            }
+        }
+        
+        stage('Push Docker Image') {
+            steps {
+               script {
+                   withDockerRegistry(credentialsId: 'docker-cred', toolName: 'docker') {
+                            sh "docker push adijaiswal/boardshack:latest"
+                    }
+               }
+            }
+        }
+        stage('Deploy To Kubernetes') {
+            steps {
+               withKubeConfig(caCertificate: '', clusterName: 'kubernetes', contextName: '', credentialsId: 'k8-cred', namespace: 'webapps', restrictKubeConfigAccess: false, serverUrl: 'https://172.31.8.146:6443') {
+                        sh "kubectl apply -f deployment-service.yaml"
+                }
+            }
+        }
+        
+        stage('Verify the Deployment') {
+            steps {
+               withKubeConfig(caCertificate: '', clusterName: 'kubernetes', contextName: '', credentialsId: 'k8-cred', namespace: 'webapps', restrictKubeConfigAccess: false, serverUrl: 'https://172.31.8.146:6443') {
+                        sh "kubectl get pods -n webapps"
+                        sh "kubectl get svc -n webapps"
+                }
+            }
+        }
+        
+        
+    }
+    post {
+    always {
+        script {
+            def jobName = env.JOB_NAME
+            def buildNumber = env.BUILD_NUMBER
+            def pipelineStatus = currentBuild.result ?: 'UNKNOWN'
+            def bannerColor = pipelineStatus.toUpperCase() == 'SUCCESS' ? 'green' : 'red'
+
+            def body = """
+                <html>
+                <body>
+                <div style="border: 4px solid ${bannerColor}; padding: 10px;">
+                <h2>${jobName} - Build ${buildNumber}</h2>
+                <div style="background-color: ${bannerColor}; padding: 10px;">
+                <h3 style="color: white;">Pipeline Status: ${pipelineStatus.toUpperCase()}</h3>
+                </div>
+                <p>Check the <a href="${BUILD_URL}">console output</a>.</p>
+                </div>
+                </body>
+                </html>
+            """
+
+            emailext (
+                subject: "${jobName} - Build ${buildNumber} - ${pipelineStatus.toUpperCase()}",
+                body: body,
+                to: 'katiyarsatyak4@gmail.com',
+                from: 'jenkins@example.com',
+                replyTo: 'jenkins@example.com',
+                mimeType: 'text/html',
+                attachmentsPattern: 'trivy-image-report.html'
+            )
+        }
+    }
+}
+
+}
+```
+  
+- Here's a brief explanation of the steps in our Jenkins pipeline:
+
+1. Git Checkout:
+
+   - Pulls the code from the main branch of your GitHub repository using the provided credentials (git-cred).
+
+2. Compile:
+
+   - Runs the mvn compile command to compile the code using Maven.
+  
+3. Test:
+
+   - Executes the mvn test command to run the unit tests.
+
+4. File System Scan:
+
+   - Uses Trivy to scan the file system for vulnerabilities and outputs the report in HTML format (trivy-fs-report.html).
+
+5. SonarQube Analysis:
+
+   - Performs static code analysis using SonarQube with the provided project name and key.
+
+6. Quality Gate:
+
+   - Waits for SonarQube's Quality Gate result. It ensures that the project meets the required quality standards.
+
+7. Build:
+
+   - Runs the mvn package command to package the application into a deployable format (e.g., JAR or WAR file).
+
+8. Publish to Nexus:
+
+   - Deploys the built artifact (packaged app) to a Nexus repository using Maven.
+9. Build & Tag Docker Image:
+
+   - Builds a Docker image of the application and tags it as latest.
+
+10. Docker Image Scan:
+
+    - Uses Trivy to scan the Docker image for vulnerabilities and outputs the report in HTML format (trivy-image-report.html).
+
+11. Push Docker Image:
+
+   - Pushes the Docker image to a Docker registry.
+
+12. Deploy to Kubernetes:
+
+   - Deploys the application to a Kubernetes cluster using the kubectl apply command with the specified deployment YAML file.
+13. Verify the Deployment:
+
+   - Verifies the deployment by checking the status of the pods and services in the Kubernetes webapps namespace.
+
+14. Post-Stage (Notification):
+
+   - Sends an email notification with the pipeline status (success/failure) and attaches the Trivy scan report. It uses Jenkins environment variables to customize the message with job details.
+
+
    
+   -- Each of these stages helps ensure that the code is built, tested, scanned for vulnerabilities, deployed to a Kubernetes cluster, and monitored, making it a comprehensive CI/CD pipeline for deploying a secure, production-ready application.
 
     
+![Screenshot (354)](https://github.com/user-attachments/assets/6d8673a9-ef02-4b1e-bfbb-f1e83203f01f)
 
 
 
-
-
-
+![Screenshot (355)](https://github.com/user-attachments/assets/edd9cf8d-ce9f-4725-968e-14c5eb9e4dd6)
 
 
    
+### Creating service YAML file:
+
+1. Creating svc.yml file:
+   - This file defines the service configuration in Kubernetes to expose your application to the network.
+  
+2. Run kubectl create ns webapps:
+   - This command creates a new namespace called webapps in your Kubernetes cluster. Namespaces are used to organize objects in Kubernetes, providing a way to group services, pods, and other resources.
+  
+3. Run kubectl apply -f svc.yml:
+   - This command applies the svc.yml configuration to the cluster. It creates the service defined in the YAML file in the webapps namespace. This service exposes your application to the network as defined by the service type i.e LoadBalancer.
+  
+
+-- These steps are setting up the networking and exposure of your application in Kubernetes
+
+
+   ![Screenshot (358)](https://github.com/user-attachments/assets/a94e86e2-71d6-412d-9163-17f42356220d)
+
+
+   ### Creating the role.yml file:
+
+   - You’ll use a text editor (e.g., vi) to create a YAML file that defines the roles and permissions for a user or group of users in Kubernetes.
+   - Roles define what actions are allowed within a specific namespace.
+
+![Screenshot (359)](https://github.com/user-attachments/assets/6483b8a5-33f0-45f4-88b3-eb60bf2c3f3e)
+
+
+![Screenshot (362)](https://github.com/user-attachments/assets/2a07bf7f-0b88-4110-a71e-0b4c4d8cbc19)
+
+
+- 2. kubectl apply -f role.yml:
+   - This command applies the role configuration in the role.yml file to the webapps namespace. It creates a role named webapps-role, giving specific permissions (like get, create, update, etc.) to resources like pods, services, and deployments within the namespace.
+ 
+- 3. Binding the Role:
+     - You also need to bind the role to a user or service account, you would create a RoleBinding file (e.g., role-binding.yml) and apply it as well:
+
+
+![Screenshot (363)](https://github.com/user-attachments/assets/7980c1ec-af5d-4abb-98f3-a35ab31906f1)
+
+   ![Screenshot (366)](https://github.com/user-attachments/assets/988949f9-5162-4cc1-9e76-698cf9749aba)
+
+
+![Screenshot (367)](https://github.com/user-attachments/assets/9dd1203f-8b80-40ef-9e1c-8ceb65f5b738)
+
+
+
+## Creating the deployment-service.yml in GitHub Repository
+
+-- This step involves defining the deployment and service configuration for your Kubernetes cluster, and then storing it in your GitHub repository.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
