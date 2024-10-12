@@ -867,13 +867,68 @@ sudo docker run -d --name prometheus -p 9090:9090 prom/prometheus
 
 
 
+## Installing Blackbox Exporter:
+
+- After installing Grafana using the wget method, you can install Blackbox Exporter using similar steps:
+
+```
+# Download the latest Blackbox Exporter release
+wget https://github.com/prometheus/blackbox_exporter/releases/download/v0.21.0/blackbox_exporter-0.21.0.linux-amd64.tar.gz
+
+# Extract it
+tar -xvzf blackbox_exporter-0.21.0.linux-amd64.tar.gz
+
+# Move the blackbox_exporter binary to /usr/local/bin
+sudo mv blackbox_exporter-0.21.0.linux-amd64/blackbox_exporter /usr/local/bin/
+
+# Run the Exporter
+./blackbox_exporter
+```
+
+![Screenshot (399)](https://github.com/user-attachments/assets/4a822ea0-6b06-4517-8725-7046b2c96556)
 
 
+![Screenshot (403)](https://github.com/user-attachments/assets/872bbfd8-4b3d-475b-a19f-f11509c73462)
 
 
+### Importing Blackbox Exporter Dashboard in Grafana
+
+   - Open your Grafana instance by navigating to its URL in your browser.
+   - Click on the "+" icon on the left side menu.
+   - Select "Import" from the dropdown.
+   - Paste **7587** in the Grafana.com Dashboard field and click **Load**.
+   - Click Import to complete the process.
+
+**This will allow you to monitor your HTTPS targets, visualize uptime, latency, and other HTTP response metrics through Grafana’s intuitive dashboard.**
 
 
-   
+![Screenshot (406)](https://github.com/user-attachments/assets/d65c4796-c88a-485c-a5a9-45b89e9ff6c6)
+
+![Screenshot (407)](https://github.com/user-attachments/assets/8963b4fc-25a3-4e9c-b793-216ff16fb571)
+
+
+### Installing and Exporting Node Exporter:
+
+- You can install the Node Exporter in a similar way as you installed the Blackbox Exporter.
+```
+wget https://github.com/prometheus/node_exporter/releases/download/v1.6.1/node_exporter-1.6.1.linux-amd64.tar.gz
+tar -xvf node_exporter-1.6.1.linux-amd64.tar.gz
+sudo mv node_exporter-1.6.1.linux-amd64/node_exporter /usr/local/bin/
+```
+
+
+## Conclusion
+
+In this project, I successfully created a complete CI/CD pipeline with Jenkins, integrated with SonarQube, Nexus, Trivy, Docker, Kubernetes, and Prometheus-Grafana for monitoring. The pipeline automates the entire process from code checkout to deployment on Kubernetes, ensuring code quality, security scanning, and container image management.
+
+
+Additionally, Prometheus and Grafana provide real-time monitoring and alerting for the deployed applications. I’ve also demonstrated how Blackbox Exporter and Node Exporter can be configured for detailed system and endpoint monitoring.
+
+
+Even though I couldn't include screenshots for the Node Exporter configuration, I’ve provided detailed instructions to help replicate the setup. This project is a great demonstration of DevOps practices in action and can serve as a foundation for more complex infrastructures.
+
+
+Feel free to explore or use this repository!
 
 
 
