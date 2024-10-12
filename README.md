@@ -826,16 +826,44 @@ Open a browser and enter **http://<Node_IP>:32399** to play the game.
 
 
 
+## Deploying Prometheus and Grafana on your monitoring server:
+
+- Deploy a new instance with 15 GB of storage.
+- Pull the Prometheus Docker image.
+- Run the Prometheus container.
+```
+sudo apt-get update
+sudo apt-get install -y docker.io
+sudo docker pull prom/prometheus
+sudo docker run -d --name prometheus -p 9090:9090 prom/prometheus
+```
 
 
+![Screenshot (384)](https://github.com/user-attachments/assets/bac224f0-7759-42da-8395-495552d8fd02)
 
 
+![Screenshot (390)](https://github.com/user-attachments/assets/cc683528-e44b-4583-88b5-e294791cea07)
 
 
+## Install Grafana:
+
+1. Let's install granfana in another which i have used in my tutorial:
+   - Update your system packages.
+   - sudo wget -q -O /usr/share/keyrings/grafana.key https://apt.grafana.com/gpg.key
+   - echo "deb [signed-by=/usr/share/keyrings/grafana.key] https://apt.grafana.com stable main" | sudo tee /etc/apt/sources.list.d/grafana.list
+   - sudo apt-get install -y grafana
 
 
+![Screenshot (391)](https://github.com/user-attachments/assets/a17adac3-d027-42e8-8776-50c90c2595ce)
+
+![Screenshot (393)](https://github.com/user-attachments/assets/8332ea6e-0c26-49d4-8517-f6b4f0402b73)
 
 
+![Screenshot (394)](https://github.com/user-attachments/assets/c9de1755-3c85-4424-8872-74eb34f2de51)
+
+![Screenshot (395)](https://github.com/user-attachments/assets/0755cca0-239f-42ae-be01-3973ae111f53)
+
+![Screenshot (396)](https://github.com/user-attachments/assets/2555dba4-1673-47af-824d-73553ad38c21)
 
 
 
