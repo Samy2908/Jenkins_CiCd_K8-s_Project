@@ -720,9 +720,109 @@ pipeline {
 
 -- This step involves defining the deployment and service configuration for your Kubernetes cluster, and then storing it in your GitHub repository.
 
+1. Create the deployment-service.yml File:
+
+```
+apiVersion: apps/v1
+kind: Deployment # Kubernetes resource kind we are creating
+metadata:
+  name: java-game-deployment
+spec:
+  selector:
+    matchLabels:
+      app: javagamedeploy
+  replicas: 2 # Number of replicas that will be created for this deployment
+  template:
+    metadata:
+      labels:
+        app: javagamedeploy
+    spec:
+      containers:
+        - name: javagamedeploy
+          image: samy2908/javagamedeploy:latest # Image that will be used to containers in the cluster
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080 # The port that the container is running on in the cluster
 
 
+---
 
+apiVersion: v1 # Kubernetes API version
+kind: Service # Kubernetes resource kind we are creating
+metadata: # Metadata of the resource kind we are creating
+  name: Java-Deploy-k8
+spec:
+  selector:
+    app: javagamedeploy
+  ports:
+    - protocol: "TCP"
+      port: 80
+      targetPort: 8080 
+  type: LoadBalancer 
+```
+
+
+![Screenshot (373)](https://github.com/user-attachments/assets/b9367833-db64-403a-98fc-0a1e6e100259)
+
+
+## Setting Up Extended Email Notifications in Jenkins.
+
+1. Generate Google App Password:
+   - To allow Jenkins to send email notifications using your Gmail account, you need to generate an App Password for Jenkins to use.
+
+2. Configure Extended Email Notification Plugin in Jenkins:
+   - Search for and install the Email Extension Plugin (also known as Extended Email Notification Plugin).
+  
+3. Set Up SMTP Server in Jenkins:
+   - Go to Manage Jenkins > Configure System.
+   - Scroll down to the Extended E-mail Notification section.
+   - Fill in the SMTP server settings:
+      - SMTP Server: smtp.gmail.com
+      - Default user e-mail suffix: Your-email@gmail.com
+      - Use SMTP Authentication: Checked
+      - SMTP Username: Your Gmail email (e.g., yourname@gmail.com)
+      - SMTP Password: Use the Google App Password you generated earlier.
+      - SMTP Port: 465
+      - Use SSL: Checked
+        
+4. Test Email Notification Configuration:
+   - In the Extended E-mail Notification section, there's an option to test the email configuration.
+   -  Fill in a test recipient email and click "Test configuration by sending test e-mail." If the email is received, the setup is correct.
+
+5. Configure Email Notifications in Your Pipeline:
+   - In your pipeline, you need to configure email notifications to be triggered based on the build status.
+
+
+![Screenshot (378)](https://github.com/user-attachments/assets/0106dcce-59eb-41e4-b4e5-e7923fdd4efb)
+
+   
+### Connecting SonarQube to Jenkins Using Webhooks
+
+To integrate SonarQube with Jenkins using webhooks, the goal is to allow SonarQube to notify Jenkins when the analysis is completed. Here's how you can set up this integration:
+
+1. Login to your SonarQube instance as an admin.
+2. Go to Administration > Project Settings > Webhooks.
+3. Add a new webhook:
+   - Name: Enter a name (e.g., Jenkins Webhook).
+   - Click **Create**.
+  
+
+![Screenshot (380)](https://github.com/user-attachments/assets/05641b52-e6be-4a3a-8756-70968f9ec96f)
+
+
+### Building the Project:
+
+   - After completing all the steps, you are now ready to build and deploy the project. The build and deployment process involves compiling the code, packaging it, and then deploying the application to the Kubernetes cluster.
+
+   - The game was successfully deployed and accessible at port 32399 on my Kubernetes cluster. To access the game:
+Use the external IP or node IP of your Kubernetes cluster along with port 32399.
+Open a browser and enter **http://<Node_IP>:32399** to play the game.
+
+
+![Screenshot (382)](https://github.com/user-attachments/assets/933594b1-e33b-490b-aeee-02252ad83fc4)
+
+
+![Screenshot (383)](https://github.com/user-attachments/assets/9ba113b7-e89c-4ca5-8ec8-a93863052319)
 
 
 
