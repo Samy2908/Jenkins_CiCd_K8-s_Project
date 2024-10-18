@@ -1,4 +1,4 @@
-# End-to-End DevOps Pipeline: Building, Testing, and Deploying with Jenkins
+# End-to-End DevSecOps Pipeline: Building, Testing, and Deploying with Jenkins
 
 ## Project Overveiw
 
